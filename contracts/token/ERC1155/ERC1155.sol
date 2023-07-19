@@ -177,7 +177,7 @@ abstract contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI, IER
             uint256 id = ids.unsafeMemoryAccess(0);
             uint256 value = values.unsafeMemoryAccess(0);
             emit TransferSingle(operator, from, to, id, value);
-        } else {
+        } else if (ids.length > 1) {
             emit TransferBatch(operator, from, to, ids, values);
         }
     }

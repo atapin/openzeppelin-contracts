@@ -109,6 +109,18 @@ contract('ERC1155', function (accounts) {
           }
         });
       });
+
+      context('with minted empty batch of tokens', function () {
+        beforeEach(async function () {
+          this.receipt = await this.token.$_mintBatch(tokenBatchHolder, [], [], data, {
+            from: operator,
+          });
+        });
+
+        it('does not emit a TransferBatch event', function () {
+          expectEvent.notEmitted(this.receipt, 'TransferBatch');
+        });
+      });
     });
 
     describe('_burn', function () {
@@ -214,6 +226,18 @@ contract('ERC1155', function (accounts) {
           for (let i = 0; i < holderBatchBalances.length; i++) {
             expect(holderBatchBalances[i]).to.be.bignumber.equal(mintValues[i].sub(burnValues[i]));
           }
+        });
+      });
+
+      context('with burned empty batch of tokens', function () {
+        beforeEach(async function () {
+          this.receipt = await this.token.$_burnBatch(tokenBatchHolder, [], [], {
+            from: operator,
+          });
+        });
+
+        it('does not emit a TransferBatch event', function () {
+          expectEvent.notEmitted(this.receipt, 'TransferBatch');
         });
       });
     });
